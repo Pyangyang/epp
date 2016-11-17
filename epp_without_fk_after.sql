@@ -10,10 +10,31 @@ Target Server Type    : MYSQL
 Target Server Version : 50711
 File Encoding         : 65001
 
-Date: 2016-11-17 13:18:28
+Date: 2016-11-17 16:01:37
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for answer
+-- ----------------------------
+DROP TABLE IF EXISTS `answer`;
+CREATE TABLE `answer` (
+  `answer_id` int(11) NOT NULL AUTO_INCREMENT,
+  `question_id` int(11) NOT NULL,
+  `team_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `answer_title` varchar(100) NOT NULL,
+  `answer_content` text NOT NULL,
+  `answer_extra_file` varchar(150) DEFAULT NULL,
+  `answer_create_time` datetime NOT NULL,
+  `answer_update_time` datetime NOT NULL,
+  PRIMARY KEY (`answer_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='答案表';
+
+-- ----------------------------
+-- Records of answer
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for mb_academy
@@ -221,31 +242,31 @@ INSERT INTO `privilege` VALUES ('6', 'DELETE SOLUTION', '删除回答');
 INSERT INTO `privilege` VALUES ('7', 'MODIFIED PROFILE', '修改个人资料');
 
 -- ----------------------------
--- Table structure for problem
+-- Table structure for question
 -- ----------------------------
-DROP TABLE IF EXISTS `problem`;
-CREATE TABLE `problem` (
-  `problem_id` int(11) NOT NULL AUTO_INCREMENT,
+DROP TABLE IF EXISTS `question`;
+CREATE TABLE `question` (
+  `question_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
-  `problem_type` int(11) DEFAULT NULL,
-  `problem_field` int(11) DEFAULT NULL,
-  `problem_title` varchar(100) DEFAULT NULL,
-  `problem_content` text,
-  `problem_difficulty_mode` int(11) DEFAULT NULL,
-  `problem_extra_file` varchar(150) DEFAULT NULL,
-  `problem_status` int(11) DEFAULT NULL,
-  `problem_create_time` datetime NOT NULL,
-  `problem_end_time` datetime DEFAULT NULL,
-  `problem_update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`problem_id`),
+  `question_type` int(11) DEFAULT NULL,
+  `question_field` int(11) DEFAULT NULL,
+  `question_title` varchar(100) DEFAULT NULL,
+  `question_content` text,
+  `question_difficulty_mode` int(11) DEFAULT NULL,
+  `question_extra_file` varchar(150) DEFAULT NULL,
+  `question_status` int(11) DEFAULT NULL,
+  `question_create_time` datetime NOT NULL,
+  `question_end_time` datetime DEFAULT NULL,
+  `question_update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`question_id`),
   KEY `problem_questioner_id` (`user_id`),
-  KEY `problem_type` (`problem_type`),
-  KEY `problem_difficulty_mode` (`problem_difficulty_mode`),
-  KEY `problem_field` (`problem_field`)
+  KEY `problem_type` (`question_type`),
+  KEY `problem_difficulty_mode` (`question_difficulty_mode`),
+  KEY `problem_field` (`question_field`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='问题表';
 
 -- ----------------------------
--- Records of problem
+-- Records of question
 -- ----------------------------
 
 -- ----------------------------
@@ -297,7 +318,7 @@ INSERT INTO `role_privilege` VALUES ('6', 'adminstrator', '1');
 DROP TABLE IF EXISTS `score_in_solution`;
 CREATE TABLE `score_in_solution` (
   `score_id` int(11) NOT NULL AUTO_INCREMENT,
-  `solution_id` int(11) NOT NULL,
+  `answer_id` int(11) NOT NULL,
   `score` int(6) DEFAULT NULL,
   `score_update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`score_id`)
@@ -305,29 +326,6 @@ CREATE TABLE `score_in_solution` (
 
 -- ----------------------------
 -- Records of score_in_solution
--- ----------------------------
-
--- ----------------------------
--- Table structure for solution
--- ----------------------------
-DROP TABLE IF EXISTS `solution`;
-CREATE TABLE `solution` (
-  `solution_id` int(11) NOT NULL AUTO_INCREMENT,
-  `problem_id` int(11) NOT NULL,
-  `team_id` int(11) DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `solution_title` varchar(100) NOT NULL,
-  `solution_content` text NOT NULL,
-  `solution_extra_file` varchar(150) DEFAULT NULL,
-  `solution_create_time` datetime NOT NULL,
-  `solution_update_time` datetime NOT NULL,
-  PRIMARY KEY (`solution_id`),
-  KEY `solution_answerer_id` (`user_id`),
-  KEY `solution_belongs_to_problem_id` (`problem_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='答案表';
-
--- ----------------------------
--- Records of solution
 -- ----------------------------
 
 -- ----------------------------
