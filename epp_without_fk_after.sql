@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50711
 File Encoding         : 65001
 
-Date: 2016-11-17 16:01:37
+Date: 2016-11-20 11:15:10
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -183,19 +183,13 @@ INSERT INTO `mb_profession` VALUES ('2', '生命与科学');
 DROP TABLE IF EXISTS `module`;
 CREATE TABLE `module` (
   `module_id` int(11) NOT NULL AUTO_INCREMENT,
-  `module_code` varchar(100) NOT NULL,
   `module_name` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`module_id`,`module_code`),
-  KEY `module_code` (`module_code`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='模块表';
+  PRIMARY KEY (`module_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='模块表';
 
 -- ----------------------------
 -- Records of module
 -- ----------------------------
-INSERT INTO `module` VALUES ('1', 'BACK-STAGE_MANAGE', '后台管理');
-INSERT INTO `module` VALUES ('2', 'QUESTION_MODULE', '提问模块');
-INSERT INTO `module` VALUES ('3', 'ANSWER_MODULE', '回答模块');
-INSERT INTO `module` VALUES ('4', 'PROFILE_FUN', '个人资料设置');
 
 -- ----------------------------
 -- Table structure for module_privilege
@@ -203,20 +197,14 @@ INSERT INTO `module` VALUES ('4', 'PROFILE_FUN', '个人资料设置');
 DROP TABLE IF EXISTS `module_privilege`;
 CREATE TABLE `module_privilege` (
   `module_privilege_id` int(11) NOT NULL AUTO_INCREMENT,
-  `module_code` varchar(100) DEFAULT NULL,
-  `privilege_code` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`module_privilege_id`),
-  KEY `module_code` (`module_code`),
-  KEY `privilege_code` (`privilege_code`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='模块权限表';
+  `module_id` int(11) DEFAULT NULL,
+  `privilege_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`module_privilege_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='模块权限表';
 
 -- ----------------------------
 -- Records of module_privilege
 -- ----------------------------
-INSERT INTO `module_privilege` VALUES ('1', 'QUESTION_MODULE', 'ADD PROBLEM');
-INSERT INTO `module_privilege` VALUES ('2', 'QUESTION_MODULE', 'EDIT PROBLEM');
-INSERT INTO `module_privilege` VALUES ('3', 'QUESTION_MODULE', 'DELETE PROBLEM');
-INSERT INTO `module_privilege` VALUES ('4', 'ANSWER_MODULE', 'ADD SOLUTION');
 
 -- ----------------------------
 -- Table structure for privilege
@@ -224,22 +212,20 @@ INSERT INTO `module_privilege` VALUES ('4', 'ANSWER_MODULE', 'ADD SOLUTION');
 DROP TABLE IF EXISTS `privilege`;
 CREATE TABLE `privilege` (
   `privilege_id` int(11) NOT NULL AUTO_INCREMENT,
-  `privilege_code` varchar(100) NOT NULL,
   `privilege_name` varchar(100) NOT NULL,
-  PRIMARY KEY (`privilege_id`,`privilege_code`),
-  KEY `privilege_code` (`privilege_code`)
+  PRIMARY KEY (`privilege_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COMMENT='权限表';
 
 -- ----------------------------
 -- Records of privilege
 -- ----------------------------
-INSERT INTO `privilege` VALUES ('1', 'ADD PROBLEM', '添加问题');
-INSERT INTO `privilege` VALUES ('2', 'EDIT PROBLEM', '编辑问题');
-INSERT INTO `privilege` VALUES ('3', 'DELETE PROBLEM', '删除问题');
-INSERT INTO `privilege` VALUES ('4', 'ADD SOLUTION', '添加回答');
-INSERT INTO `privilege` VALUES ('5', 'EDIT SOLUTION', '编辑回答');
-INSERT INTO `privilege` VALUES ('6', 'DELETE SOLUTION', '删除回答');
-INSERT INTO `privilege` VALUES ('7', 'MODIFIED PROFILE', '修改个人资料');
+INSERT INTO `privilege` VALUES ('1', '添加问题');
+INSERT INTO `privilege` VALUES ('2', '编辑问题');
+INSERT INTO `privilege` VALUES ('3', '删除问题');
+INSERT INTO `privilege` VALUES ('4', '添加回答');
+INSERT INTO `privilege` VALUES ('5', '编辑回答');
+INSERT INTO `privilege` VALUES ('6', '删除回答');
+INSERT INTO `privilege` VALUES ('7', '修改个人资料');
 
 -- ----------------------------
 -- Table structure for question
@@ -275,19 +261,14 @@ CREATE TABLE `question` (
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role` (
   `role_id` int(11) NOT NULL AUTO_INCREMENT,
-  `role_code` varchar(13) NOT NULL,
   `role_name` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`role_id`,`role_code`),
-  KEY `role_code` (`role_code`),
+  PRIMARY KEY (`role_id`),
   KEY `role_id` (`role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COMMENT='角色表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色表';
 
 -- ----------------------------
 -- Records of role
 -- ----------------------------
-INSERT INTO `role` VALUES ('1', 'adminstrator', '管理员');
-INSERT INTO `role` VALUES ('2', 'questioner', '提问者');
-INSERT INTO `role` VALUES ('3', 'answerer', '回答者');
 
 -- ----------------------------
 -- Table structure for role_privilege
@@ -295,22 +276,14 @@ INSERT INTO `role` VALUES ('3', 'answerer', '回答者');
 DROP TABLE IF EXISTS `role_privilege`;
 CREATE TABLE `role_privilege` (
   `role_privilege_id` int(11) NOT NULL AUTO_INCREMENT,
-  `role_code` varchar(13) DEFAULT NULL,
+  `role_id` int(11) DEFAULT NULL,
   `module_privilege_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`role_privilege_id`),
-  KEY `module_privilege_id` (`module_privilege_id`),
-  KEY `role_code_in_role_privilege` (`role_code`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COMMENT='角色权限表(基于模块权限)';
+  PRIMARY KEY (`role_privilege_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色权限表(基于模块权限)';
 
 -- ----------------------------
 -- Records of role_privilege
 -- ----------------------------
-INSERT INTO `role_privilege` VALUES ('1', 'questioner', '2');
-INSERT INTO `role_privilege` VALUES ('2', 'answerer', '3');
-INSERT INTO `role_privilege` VALUES ('3', 'questioner', '4');
-INSERT INTO `role_privilege` VALUES ('4', 'answerer', '4');
-INSERT INTO `role_privilege` VALUES ('5', 'adminstrator', '4');
-INSERT INTO `role_privilege` VALUES ('6', 'adminstrator', '1');
 
 -- ----------------------------
 -- Table structure for score_in_solution
@@ -335,7 +308,7 @@ DROP TABLE IF EXISTS `team`;
 CREATE TABLE `team` (
   `team_id` int(11) NOT NULL AUTO_INCREMENT,
   `team_name` varchar(100) NOT NULL,
-  `tame_leader` varchar(100) NOT NULL,
+  `tame_leader` int(11) NOT NULL,
   `team_total_users` int(11) DEFAULT NULL,
   `team_create_time` datetime DEFAULT NULL,
   `team_update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
@@ -417,11 +390,9 @@ CREATE TABLE `user` (
 DROP TABLE IF EXISTS `user_role`;
 CREATE TABLE `user_role` (
   `user_role_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_username` varchar(13) NOT NULL,
-  `role_code` varchar(13) NOT NULL,
-  PRIMARY KEY (`user_role_id`),
-  KEY `role_code_in_user_role` (`role_code`),
-  KEY `user_username` (`user_username`)
+  `user_id` int(11) NOT NULL,
+  `role_id` int(11) NOT NULL,
+  PRIMARY KEY (`user_role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户角色表';
 
 -- ----------------------------
